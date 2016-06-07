@@ -1,0 +1,33 @@
+Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+    Accept-Encoding:gzip, deflate, sdch
+    Accept-Language:zh-CN,zh;q=0.8
+    Cache-Control:max-age=0
+    Connection:keep-alive
+    Cookie:bdshare_firstime=1464425564120; username=DengrongGuan_762089b6-11dd-1000-93d2-4dc23a3e1c3f; xpeSessionId=auth:YzNlZjIwY2MyNDBjMDhjYTczMmU5ZjU0NjliN2Q1MmU6RGVuZ3JvbmdHdWFuXzc2MjA4OWI2LTExZGQtMTAwMC05M2QyLTRkYzIzYTNlMWMzZg==; user="DengrongGuan_762089b6-11dd-1000-93d2-4dc23a3e1c3f|%E7%AE%A1%E7%99%BB%E8%8D%A3|normal"; Hm_lvt_30c43732c76b9f372baa51b918b0fc4e=1464425505; Hm_lpvt_30c43732c76b9f372baa51b918b0fc4e=1464429586
+    Host:resource.jingpinke.com
+    Upgrade-Insecure-Requests:1
+    User-Agent:Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36
+
+
+    判断是否能下载:
+    http://resource.jingpinke.com/xpe/portal/serviceJson/8eb3d955-1223-1000-899d-d1978b4f37ef?flag=tip&uuid=38c3faec-144e-1000-aea3-91d231a9332a
+    获取下载url：
+    http://resource.jingpinke.com/xpe/portal/serviceJson/8eb3d955-1223-1000-899d-d1978b4f37ef?flag=pay&uuid=38c86c48-144e-1000-a6f5-59b78b968456
+
+
+    Set-Cookie:
+    user="DengrongGuan_762089b6-11dd-1000-93d2-4dc23a3e1c3f|%E7%AE%A1%E7%99%BB%E8%8D%A3|normal";
+    Path=/;
+    Domain=.jingpinke.com xpeSessionId=auth:YzNlZjIwY2MyNDBjMDhjYTczMmU5ZjU0NjliN2Q1MmU6RGVuZ3JvbmdHdWFuXzc2MjA4OWI2LTExZGQtMTAwMC05M2QyLTRkYzIzYTNlMWMzZg==;
+    Path=/;
+    Domain=.jingpinke.com username=DengrongGuan_762089b6-11dd-1000-93d2-4dc23a3e1c3f;
+    Path=/;
+    Domain=.jingpinke.com xpeSessionId=1e38f76d9c32d9bb;
+    Path=/
+
+    bdshare_firstime=1464425564120;
+    username=DengrongGuan_762089b6-11dd-1000-93d2-4dc23a3e1c3f;
+    xpeSessionId=auth:YzNlZjIwY2MyNDBjMDhjYTczMmU5ZjU0NjliN2Q1MmU6RGVuZ3JvbmdHdWFuXzc2MjA4OWI2LTExZGQtMTAwMC05M2QyLTRkYzIzYTNlMWMzZg==;
+    user="DengrongGuan_762089b6-11dd-1000-93d2-4dc23a3e1c3f|%E7%AE%A1%E7%99%BB%E8%8D%A3|normal";
+    Hm_lvt_30c43732c76b9f372baa51b918b0fc4e=1464590103,1464604777,1464785378,1464856442;
+    Hm_lpvt_30c43732c76b9f372baa51b918b0fc4e=1464856903

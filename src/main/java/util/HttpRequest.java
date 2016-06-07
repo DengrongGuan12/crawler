@@ -1,8 +1,8 @@
 package util;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -21,7 +21,7 @@ public class HttpRequest {
      *            请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
      * @return URL 所代表远程资源的响应结果
      */
-    public static String sendGet(String url, String param) {
+    public static String sendGet(String url, String param, Map<String,String> headers) {
         String result = "";
         BufferedReader in = null;
         try {
@@ -30,10 +30,11 @@ public class HttpRequest {
             // 打开和URL之间的连接
             URLConnection connection = realUrl.openConnection();
             // 设置通用的请求属性
-            connection.setRequestProperty("accept", "*/*");
-            connection.setRequestProperty("connection", "Keep-Alive");
-            connection.setRequestProperty("user-agent",
-                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            // 设置通用的请求属性
+            for (String key: headers.keySet()
+                    ) {
+                connection.setRequestProperty(key,headers.get(key));
+            }
             // 建立实际的连接
             connection.connect();
             // 获取所有响应头字段
@@ -44,7 +45,7 @@ public class HttpRequest {
 //            }
             // 定义 BufferedReader输入流来读取URL的响应
             in = new BufferedReader(new InputStreamReader(
-                    connection.getInputStream()));
+                    connection.getInputStream(),"utf-8"));
             String line;
             while ((line = in.readLine()) != null) {
                 result += line;
@@ -172,5 +173,54 @@ public class HttpRequest {
         }
         return map;
 
+    }
+
+    public static void downloadFile(String httpUrl,Map<String,String> headers){
+        // 下载网络文件
+        int bytesum = 0;
+        int byteread = 0;
+
+        URL url = null;
+        try {
+            url = new URL(httpUrl);
+        } catch (MalformedURLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+            return;
+        }
+
+        try {
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(4*1000) ;
+            conn.setRequestMethod("GET") ;
+//            conn.setRequestProperty(
+//                    "Accept",
+//                    "image/gif, image/jpeg, image/pjpeg, image/pjpeg, " +
+//                            "application/x-shockwave-flash, application/xaml+xml, " +
+//                            "application/vnd.ms-xpsdocument, application/x-ms-xbap, " +
+//                            "application/x-ms-application, application/vnd.ms-excel, " +
+//                            "application/vnd.ms-powerpoint, application/msword, application/octet-stream, */*");
+            for (String key: headers.keySet()
+                    ) {
+                conn.setRequestProperty(key,headers.get(key));
+            }
+            InputStream inStream = conn.getInputStream();
+            FileOutputStream fs = new FileOutputStream("src/main/resources/a.pdf");
+
+            byte[] buffer = new byte[1204];
+            while ((byteread = inStream.read(buffer)) != -1) {
+                bytesum += byteread;
+                System.out.println(bytesum);
+                fs.write(buffer, 0, byteread);
+            }
+            return;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
     }
 }

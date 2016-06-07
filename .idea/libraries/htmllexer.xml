@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="htmllexer">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/htmllexer.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

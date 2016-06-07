@@ -9,8 +9,11 @@ import java.util.Map;
 public class Schools {
     private Map<String,String> schoolsMap = new HashMap<String,String>();
     public void initSchools(){
-        schoolsMap.put("8006","南航");
+//        schoolsMap.put("8006","南航");
+//        schoolsMap.put("80011","南林");
+//        schoolsMap.put("80015","南工程");
 //        schoolsMap.put("8005","东南");
+        schoolsMap.put("80023","中国药科大学");
 //        schoolsMap.put("8007","南财");
 //        schoolsMap.put("80014","南中医");
 //        schoolsMap.put("8003","南师");

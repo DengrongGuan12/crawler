@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="htmlparser-2.1">
+  <library name="httpclient-4.5.2">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/htmlparser-2.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/httpclient-4.5.2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
