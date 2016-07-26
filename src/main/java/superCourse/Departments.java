@@ -30,7 +30,6 @@ public class Departments {
             Department d = new Department();
             d.setId(department.getInt("tagIdInt"));
             d.setName(department.getString("nameStr"));
-            System.out.println("add department:"+d.getName());
             departments.add(d);
         }
     }

@@ -10,6 +10,7 @@ import util.HttpRequest;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,6 +20,7 @@ public class School {
     private String name;
     private ArrayList<String> allCourses = new ArrayList<String>();//全部不重复课程
     private HashMap<String,ArrayList<String>> courseDepartments = new HashMap<String, ArrayList<String>>();//通适课
+    private HashMap<String,Integer> courseGrade = new HashMap<String, Integer>();
     public School(String id,String name){
         this.schoolId = id;
         this.name = name;
@@ -31,8 +33,11 @@ public class School {
         this.schoolId = schoolId;
     }
     private ArrayList<Department> deparmentsList = new ArrayList<Department>();
+    private ArrayList<String> departments = new ArrayList<String>();
+    private Map<String,String> courseNameListMap = new HashMap<String, String>();
     private String schoolId;
     public void requestDepartments(){
+        System.out.println(name+"请求中...");
         HttpRequest httpRequest = new HttpRequest();
         Map<String,String> headers = new HashMap<String, String>();
         headers.put("Cookie","JSESSIONID="+User.cookie);
@@ -43,19 +48,37 @@ public class School {
         headers.put("Accept-Encoding","gzip");
         headers.put("Content-Length","174");
         String params = "platform=1&beginYear=2015&phoneVersion=23&phoneBrand=Android&versionNumber=7.3.0&phoneModel=Custom+Phone+-+6.0.0+-+API+23+-+768x1280&schoolId="+schoolId+"&channel=advertising&term=2&";
-        String aca = httpRequest.sendPost("http://120.55.151.61/V2/Course/getCourseTagsV2.action",
-                params,
-                headers);
-        Departments departments = new Departments(aca);
-        departments.parse();
-        this.deparmentsList = departments.getDepartments();
+        while(true){
+            String aca = httpRequest.sendPost("http://120.55.151.61/V2/Course/getCourseTagsV2.action",
+                    params,
+                    headers);
+            Departments departments = new Departments(aca);
+            departments.parse();
+            boolean hasMore = false;
+            for (Department d:departments.getDepartments()){
+                if(this.departments.contains(d.getName())){
+                    continue;
+                }else{
+                    d.setSchoolName(name);
+                    this.deparmentsList.add(d);
+                    this.departments.add(d.getName());
+                    System.out.println("add department:"+d.getName()+";"+d.getId());
+                    hasMore = true;
+                }
+            }
+            if(!hasMore){
+                break;
+            }
+        }
         for (Department d:this.deparmentsList
              ) {
             d.setSchoolId(schoolId);
             if(d.getName().equals("研究生院")){
                 continue;
             }
-            d.requestCourses();
+            d.requestCourses(courseGrade,courseNameListMap);
+//            d.writeToExcel();
+            d.writeToTxt();
         }
     }
     public void writeDataToTxt(){
@@ -160,6 +183,41 @@ public class School {
             wwb2.write();
             wwb.close();
             wwb2.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public void writeDataToExcel2(){
+        try{
+            String filePath = "C:\\Users\\dengrong\\"+name+".xls";
+            File f = new File(filePath);
+            if (!f.exists()) {
+                f.createNewFile();
+            }
+            WritableWorkbook wwb = Workbook.createWorkbook(f);
+            WritableSheet ws = wwb.createSheet("Sheet 1",0);
+            Label dL = new Label(0,0,"院系");
+            Label cL = new Label(1,0,"课程");
+            Label gL = new Label(2,0,"年级");
+            ws.addCell(dL);
+            ws.addCell(cL);
+            ws.addCell(gL);
+            int i1 = 1;
+            for(Department d:this.deparmentsList){
+                List<Course> courses = d.getCourseList();
+                for (Course course:
+                        courses) {
+                    dL = new Label(0,i1,d.getName());
+                    cL = new Label(1,i1,course.getName());
+                    gL = new Label(2,i1,course.getGrade()+"");
+                    ws.addCell(dL);
+                    ws.addCell(cL);
+                    ws.addCell(gL);
+                    i1++;
+                }
+            }
+            wwb.write();
+            wwb.close();
         }catch (Exception e){
             e.printStackTrace();
         }
