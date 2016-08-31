@@ -74,12 +74,16 @@ public class Course {
 //        System.out.println(aca);
         JSONObject raw = new JSONObject(aca);
         courseList = "{"+name+":"+aca+"}";
-        JSONObject data = raw.getJSONObject("data");
-        JSONArray courseList = data.getJSONArray("courseList");
-        //目前只取第一个课程作为course的id
-        if(courseList.length() > 0){
-            JSONObject courseData = courseList.getJSONObject(0);
-            courseId = courseData.optInt("courseId");
+        JSONObject data = raw.optJSONObject("data");
+        if(data == null){
+
+        }else{
+            JSONArray courseList = data.getJSONArray("courseList");
+            //目前只取第一个课程作为course的id
+            if(courseList.length() > 0){
+                JSONObject courseData = courseList.getJSONObject(0);
+                courseId = courseData.optInt("courseId");
+            }
         }
     }
     public void getCourseListByName(){
@@ -103,7 +107,10 @@ public class Course {
 //        System.out.println(aca);
             JSONObject raw = new JSONObject(aca);
 //        courseList = "{"+name+":"+aca+"}";
-            JSONObject data = raw.getJSONObject("data");
+            JSONObject data = raw.optJSONObject("data");
+            if(data == null){
+                continue;
+            }
             JSONArray courseList = data.getJSONArray("courseList");
             for(int i = 0;i<courseList.length();i++){
                 JSONObject c = courseList.getJSONObject(i);
@@ -193,8 +200,12 @@ public class Course {
                     }
                 }
         );
-        Map.Entry<Integer,Integer> max = list_Data.get(0);
-        this.grade = 16-max.getKey();
+        if(list_Data.size() == 0){
+            this.grade = (int)Math.random()*4+1;
+        }else{
+            Map.Entry<Integer,Integer> max = list_Data.get(0);
+            this.grade = 16-max.getKey();
+        }
 //        System.out.println(16-max.getKey());
     }
 

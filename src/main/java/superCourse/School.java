@@ -46,8 +46,15 @@ public class School {
         headers.put("Host","120.55.151.61");
         headers.put("Connection","Keep-Alive");
         headers.put("Accept-Encoding","gzip");
-        headers.put("Content-Length","174");
-        String params = "platform=1&beginYear=2015&phoneVersion=23&phoneBrand=Android&versionNumber=7.3.0&phoneModel=Custom+Phone+-+6.0.0+-+API+23+-+768x1280&schoolId="+schoolId+"&channel=advertising&term=2&";
+        headers.put("Content-Length","178");
+        String params = "platform=1&beginYear=2012&phoneVersion=23&phoneBrand=Android&versionNumber=7.3.0&phoneModel=Custom+Phone+-+6.0.0+-+API+23+-+768x1280&schoolId="+schoolId+"&channel=OfficialMarket&term=2&";
+//        RequestDepartmentsThread requestDepartmentsThread = new RequestDepartmentsThread(httpRequest,params,headers);
+//        requestDepartmentsThread.start();
+//        try {
+//            requestDepartmentsThread.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         while(true){
             String aca = httpRequest.sendPost("http://120.55.151.61/V2/Course/getCourseTagsV2.action",
                     params,
@@ -77,8 +84,8 @@ public class School {
                 continue;
             }
             d.requestCourses(courseGrade,courseNameListMap);
-//            d.writeToExcel();
-            d.writeToTxt();
+            d.writeToExcel();
+//            d.writeToTxt();
         }
     }
     public void writeDataToTxt(){
@@ -220,6 +227,46 @@ public class School {
             wwb.close();
         }catch (Exception e){
             e.printStackTrace();
+        }
+    }
+    class RequestDepartmentsThread extends Thread{
+        HttpRequest httpRequest;
+        String params;
+        Map<String,String> headers;
+
+        public RequestDepartmentsThread(HttpRequest httpRequest,String params,Map<String,String> headers){
+            this.httpRequest = httpRequest;
+            this.params = params;
+            this.headers = headers;
+        }
+        public void run(){
+            while(true){
+                try {
+                    sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                String aca = httpRequest.sendPost("http://120.55.151.61/V2/Course/getCourseTagsV2.action",
+                        params,
+                        headers);
+                Departments departments = new Departments(aca);
+                departments.parse();
+                boolean hasMore = false;
+                for (Department d:departments.getDepartments()){
+                    if(School.this.departments.contains(d.getName())){
+                        continue;
+                    }else{
+                        d.setSchoolName(name);
+                        School.this.deparmentsList.add(d);
+                        School.this.departments.add(d.getName());
+                        System.out.println("add department:"+d.getName()+";"+d.getId());
+                        hasMore = true;
+                    }
+                }
+                if(!hasMore){
+                    break;
+                }
+            }
         }
     }
 

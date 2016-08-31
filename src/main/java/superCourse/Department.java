@@ -93,11 +93,14 @@ public class Department {
         String params = "";
         String coursesJson = "";
         while(true){
-            params = "platform=1&tagId="+id+"&beginYear=2015&phoneVersion=23&phoneBrand=Android&index=&versionNumber=7.3.0&phoneModel=Custom+Phone+-+6.0.0+-+API+23+-+768x1280&schoolId="+schoolId+"&type=0&page="+page+"&channel=advertising&term=1&";
+            params = "platform=1&tagId="+id+"&beginYear=2012&phoneVersion=23&phoneBrand=Android&index=&versionNumber=7.5.0&phoneModel=Custom+Phone+-+6.0.0+-+API+23+-+768x1280&schoolId="+schoolId+"&type=0&page="+page+"&channel=OfficialMarket&term=1&";
             coursesJson = httpRequest.sendPost("http://120.55.151.61/V2/Course/getCourseNameListByTagV2.action",params,headers);
             System.out.println(coursesJson);
             JSONObject raw = new JSONObject(coursesJson);
-            JSONObject data = raw.getJSONObject("data");
+            JSONObject data = raw.optJSONObject("data");
+            if(data == null){
+                continue;
+            }
             JSONArray courseList = data.getJSONArray("courseList");
             if(courseList.length() == 0){
                 break;
@@ -108,31 +111,35 @@ public class Department {
                 if(courses.contains(courseName)){
                     continue;
                 }
-                String coursesList = "";
-                if(courseListMap.containsKey(courseName)){
-                    coursesList = courseListMap.get(courseName);
-                }else{
-                    Course course1 = new Course();
-                    course1.setName(courseName);
-                    course1.setSchoolId(schoolId);
-                    course1.setTerm(1);
-                    //请求课程的详细信息需要
-                    course1.getCourseListByName();
-                    coursesList = course1.getCourseList();
-                    courseListMap.put(courseName,coursesList);
-                }
-                coursesString+=coursesList+",";
+//                String coursesList = "";
+//                if(courseListMap.containsKey(courseName)){
+//                    coursesList = courseListMap.get(courseName);
+//                }else{
+//                    Course course1 = new Course();
+//                    course1.setName(courseName);
+//                    course1.setSchoolId(schoolId);
+//                    course1.setTerm(1);
+//                    //请求课程的详细信息需要
+//                    course1.getCourseListByName();
+//                    coursesList = course1.getCourseList();
+//                    courseListMap.put(courseName,coursesList);
+//                }
+//                coursesString+=coursesList+",";
 
                 //请求年级的时候需要
-//                if(courseGrade.containsKey(courseName)){
-//                    int grade = courseGrade.get(courseName);
-//                    course1.setGrade(grade);
-//                }else {
-//                    course1.calCourseGrade();
-//                    courseGrade.put(courseName,course1.getGrade());
-//                }
-//                this.courseList.add(course1);
-//                courses.add(courseName);
+                Course course1 = new Course();
+                course1.setName(courseName);
+                course1.setSchoolId(schoolId);
+                course1.setTerm(1);
+                if(courseGrade.containsKey(courseName)){
+                    int grade = courseGrade.get(courseName);
+                    course1.setGrade(grade);
+                }else {
+                    course1.calCourseGrade();
+                    courseGrade.put(courseName,course1.getGrade());
+                }
+                this.courseList.add(course1);
+                courses.add(courseName);
 
                 System.out.println("add course:"+courseName);
             }
@@ -140,10 +147,13 @@ public class Department {
         }
         page = 0;
         while (true){
-            params = "platform=1&tagId="+id+"&beginYear=2015&phoneVersion=23&phoneBrand=Android&index=&versionNumber=7.3.0&phoneModel=Custom+Phone+-+6.0.0+-+API+23+-+768x1280&schoolId="+schoolId+"&type=0&page="+page+"&channel=advertising&term=2&";
+            params = "platform=1&tagId="+id+"&beginYear=2012&phoneVersion=23&phoneBrand=Android&index=&versionNumber=7.5.0&phoneModel=Custom+Phone+-+6.0.0+-+API+23+-+768x1280&schoolId="+schoolId+"&type=0&page="+page+"&channel=OfficialMarket&term=2&";
             coursesJson = httpRequest.sendPost("http://120.55.151.61/V2/Course/getCourseNameListByTagV2.action",params,headers);
             JSONObject raw = new JSONObject(coursesJson);
-            JSONObject data = raw.getJSONObject("data");
+            JSONObject data = raw.optJSONObject("data");
+            if(data == null){
+                continue;
+            }
             JSONArray courseList = data.getJSONArray("courseList");
             if(courseList.length() == 0){
                 break;
@@ -154,33 +164,35 @@ public class Department {
                 if(courses.contains(courseName)){
                     continue;
                 }
-                String coursesList = "";
-                if(courseListMap.containsKey(courseName)){
-                    coursesList = courseListMap.get(courseName);
-                }else{
-                    Course course1 = new Course();
-                    course1.setName(courseName);
-                    course1.setSchoolId(schoolId);
-                    course1.setTerm(1);
-                    //请求课程的详细信息需要
-                    course1.getCourseListByName();
-                    coursesList = course1.getCourseList();
-                    courseListMap.put(courseName,coursesList);
-                }
-                coursesString+=coursesList+",";
-//                Course course1 = new Course();
-//                course1.setName(courseName);
-//                course1.setSchoolId(schoolId);
-//                course1.setTerm(2);
-//                if(courseGrade.containsKey(courseName)){
-//                    int grade = courseGrade.get(courseName);
-//                    course1.setGrade(grade);
+//                String coursesList = "";
+//                if(courseListMap.containsKey(courseName)){
+//                    coursesList = courseListMap.get(courseName);
 //                }else{
-//                    course1.calCourseGrade();
-//                    courseGrade.put(courseName,course1.getGrade());
+//                    Course course1 = new Course();
+//                    course1.setName(courseName);
+//                    course1.setSchoolId(schoolId);
+//                    course1.setTerm(1);
+//                    //请求课程的详细信息需要
+//                    course1.getCourseListByName();
+//                    coursesList = course1.getCourseList();
+//                    courseListMap.put(courseName,coursesList);
 //                }
-//                this.courseList.add(course1);
-//                courses.add(courseName);
+//                coursesString+=coursesList+",";
+
+                //请求年级
+                Course course1 = new Course();
+                course1.setName(courseName);
+                course1.setSchoolId(schoolId);
+                course1.setTerm(2);
+                if(courseGrade.containsKey(courseName)){
+                    int grade = courseGrade.get(courseName);
+                    course1.setGrade(grade);
+                }else{
+                    course1.calCourseGrade();
+                    courseGrade.put(courseName,course1.getGrade());
+                }
+                this.courseList.add(course1);
+                courses.add(courseName);
                 System.out.println("add course:"+courseName);
             }
             page++;

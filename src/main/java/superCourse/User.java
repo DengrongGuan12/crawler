@@ -22,8 +22,8 @@ public class User {
         headers.put("Connection","Keep-Alive");
         headers.put("Accept-Encoding","gzip");
         headers.put("Content-Length","248");
-        String params = "platform=1&password="+Secret.passwd+"&phoneVersion=23&phoneBrand=Android&account=9861D883CF5E443B0FB0B82D7E8E2056&versionNumber=7.3.0&phoneModel=Custom+Phone+-+6.0.0+-+API+23+-+768x1280&deviceCode=000000000000000&channel=advertising&";
-        Map<String, List<String>> map = httpRequest.postForHeaders("http://120.55.151.61/V2/StudentSkip/backstageLoginV5.action",
+        String params = "platform=1&password="+Secret.passwd+"&phoneVersion=23&phoneBrand=Android&account="+Secret.account+"&versionNumber=7.5.0&phoneModel=Custom+Phone+-+6.0.0+-+API+23+-+768x1280&deviceCode=000000000000000&channel=OfficialMarket&";
+        Map<String, List<String>> map = httpRequest.postForHeaders("http://120.55.151.61/V2/StudentSkip/loginCheckV4.action",
                 params,
                 headers);
         Outter:
